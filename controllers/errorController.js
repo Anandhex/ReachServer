@@ -35,7 +35,7 @@ const sendErrorDev = (err, res) => {
 
 const sendErrorProd = (err, res) => {
   if (err.isOperational) {
-    console.log('here', err.message);
+    console.log('here', err);
     res.status(err.statusCode).json({
       status: err.status,
       message: err.message
@@ -58,7 +58,7 @@ module.exports = (err, req, res, next) => {
   } else if (process.env.NODE_ENV === 'production') {
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
     let error = { ...err };
-
+    console.log(error);
     if (err.name === 'CastError') error = handleCastErrorDB(error);
     if (err.code === 11000) error = handleDuplicateFieldsDB(error);
     if (err.name === 'ValidationError') error = handleValidationErrorDB(error);
