@@ -1,0 +1,39 @@
+{
+    _id: ObjectId,
+    name: String,||fullname:String //concat of firstname and last name
+    username:String,
+    dob:String,
+    email:String,
+    profile_img:String, //url of the image   |||Should think how we have store the image|||
+    password:hashed of password,
+    areaOfInterest:[...String...] //array of String
+    posts:[         //array of objects
+        {
+            _id:ObjectId,
+            postTitle:String,
+            postContent:String,
+            likes:Number,
+            dislikes:Number,
+            comments:[   //array of comments
+                {
+                    _id:ObjectId,
+                    commentText:String,
+                    username:String,
+                    likes:Number,               //should be likes and dislikes included
+                    dislikes:Number,
+                    replies:[                   //Array of Objects
+                        {
+                            _id:ObjectId,
+                            replyText:String,
+                            username:String,
+                            likes:Number,       //same as before comments
+                            dislikes:Number,
+
+                        }
+                    ]
+                }
+            ]
+
+        }
+    ]
+}
