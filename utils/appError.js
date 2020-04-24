@@ -4,6 +4,7 @@ class AppError extends Error {
     this.statusCode = statusCode;
     this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
     this.isOperational = true; //Whether the error is created by the express applicationa
+    this.errorMessage = message;
     Error.captureStackTrace(this, this.constructor);
   }
 }
