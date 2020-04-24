@@ -32,7 +32,7 @@ exports.getUserPosts = catchAsync(async (req, res, next) => {
 exports.getRecommendPosts = catchAsync(async (req, res, next) => {
   const userId = req.params.userId;
   let resp = await axios.get(
-    `http://127.0.0.1:5001/recommend-interest?interests=${req.user.areaOfInterest
+    `https://dry-savannah-75351.herokuapp.com/recommend-interest?interests=${req.user.areaOfInterest
       .filter(interest => interest)
       .join(':')}}`
   );
@@ -69,7 +69,7 @@ exports.getLikedPost = catchAsync(async (req, res, next) => {
 exports.addPost = catchAsync(async (req, res, next) => {
   req.body.userId = req.params.userId ? req.params.userId : req.user._id;
   const resp = await axios.get(
-    `http://127.0.0.1:5001/predict-sentiment?comment=${req.body.postContent}`
+    `https://dry-savannah-75351.herokuapp.com/predict-sentiment?comment=${req.body.postContent}`
   );
   if (req.user._id.equals(req.body.userId)) {
     if (resp.data.Sentiment === 'Positive') {
@@ -102,7 +102,7 @@ exports.updatePost = catchAsync(async (req, res, next) => {
         });
       } else if (req.user._id.equals(post.userId)) {
         const resp = await axios.get(
-          `http://127.0.0.1:5001/predict-sentiment?comment=${req.body.postContent}`
+          `https://dry-savannah-75351.herokuapp.com/predict-sentiment?comment=${req.body.postContent}`
         );
         if (resp.data.Sentiment === 'Positive') {
           post = await Post.findByIdAndUpdate(req.params.postId, req.body, {

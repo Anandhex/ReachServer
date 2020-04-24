@@ -49,7 +49,7 @@ function checkFileType(file, cb) {
 exports.getInterestRecommendation = catchAsync(async (req, res, next) => {
   console.log(req.user);
   const user = await axios.get(
-    `http://127.0.0.1:5001/suggest-category?age=${req.user.dob}&gender=${req.user.gender}`
+    `https://dry-savannah-75351.herokuapp.com/suggest-category?age=${req.user.dob}&gender=${req.user.gender}`
   );
   res.status(200).json({ status: 'success', data: { data: user.data } });
 });
