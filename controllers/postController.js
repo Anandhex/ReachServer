@@ -77,11 +77,11 @@ exports.addPost = catchAsync(async (req, res, next) => {
       res.status(201).json({ status: 'success', data: { data: post } });
     } else {
       return next(
-        new AppError('The post is not appropriate to be posted', 403)
+        new AppError('The post is not appropriate to be posted', 400)
       );
     }
   } else {
-    next(new AppError('Unauthorized access', 403));
+    next(new AppError('Unauthorized access', 401));
   }
 });
 
@@ -110,17 +110,17 @@ exports.updatePost = catchAsync(async (req, res, next) => {
           });
         } else {
           return next(
-            new AppError('The post is not appropriate to be updated', 403)
+            new AppError('The post is not appropriate to be updated', 400)
           );
         }
         res.status(200).json({ status: 'success', data: { data: post } });
       } else {
         next(
-          new AppError('Unauthorized. Please login to update the post', 403)
+          new AppError('Unauthorized. Please login to update the post', 401)
         );
       }
     } else {
-      next(new AppError('Unauthorized. Please login to update the post', 403));
+      next(new AppError('Unauthorized. Please login to update the post', 401));
     }
   } else {
     next(new AppError('Post not found', 404));
@@ -136,6 +136,6 @@ exports.deletePost = catchAsync(async (req, res, next) => {
     }
     res.status(201).json({ status: 'success', message: 'deleted' });
   } else {
-    next(new AppError('Unauthorized. Please login to update the post', 403));
+    next(new AppError('Unauthorized. Please login to update the post', 401));
   }
 });

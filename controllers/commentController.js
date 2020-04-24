@@ -33,7 +33,7 @@ exports.addComment = catchAsync(async (req, res, next) => {
     );
     res.status(201).json({ status: 'success', data: { data: post } });
   } else {
-    return next(new AppError('Comment is inappropriate', 403));
+    return next(new AppError('Comment is inappropriate', 400));
   }
 });
 
@@ -55,10 +55,10 @@ exports.updateComment = catchAsync(async (req, res, next) => {
         let post = await Post.findById(comment.postId).populate('comments');
         res.status(200).json({ status: 'success', data: { data: post } });
       } else {
-        return next(new AppError('Comment is inappropriate', 403));
+        return next(new AppError('Comment is inappropriate', 400));
       }
     } else {
-      next(new AppError('Unauthorized. Please login to update the post', 403));
+      next(new AppError('Unauthorized. Please login to update the post', 401));
     }
   } else {
     next(new AppError('Comment not found', 404));
@@ -82,7 +82,7 @@ exports.deleteComment = catchAsync(async (req, res, next) => {
       }).populate('comments');
       res.status(201).json({ status: 'success', data: { data: post } });
     } else {
-      next(new AppError('Unauthorized. Please login to update the post', 403));
+      next(new AppError('Unauthorized. Please login to update the post', 401));
     }
   } else {
     next(new AppError('Comment not found', 404));

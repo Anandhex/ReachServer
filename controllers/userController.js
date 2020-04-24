@@ -96,7 +96,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
   } else if (!user) {
     return next(new AppError('No user found with that ID', 404));
   } else {
-    return next(new AppError('Unauthorized access', 403));
+    return next(new AppError('Unauthorized access', 401));
   }
   res.status(201).json({ status: 'success', data: { user } });
 });
