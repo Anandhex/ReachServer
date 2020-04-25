@@ -7,6 +7,7 @@ const multer = require('multer');
 const multerS3 = require('multer-s3');
 const path = require('path');
 const axios = require('axios');
+const Post = require('../models/postModel');
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -183,4 +184,31 @@ exports.uploadProfileImg = catchAsync(async (req, res, next) => {
       }
     })
   );
+});
+
+exports.getUserStats = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.userId);
+  const userStats = await Post.aggregate([
+    {
+      $match: {
+        username: { $eq: user.username }
+      }
+    },
+
+    {
+      $project: {
+        noOfComments: { $size: '$comments' },
+        likes: '$likes'
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalLikes: { $sum: '$likes' },
+        totalPost: { $sum: 1 },
+        totalComments: { $sum: '$noOfComments' }
+      }
+    }
+  ]);
+  res.status(200).json({ status: 'success', data: { userStats } });
 });

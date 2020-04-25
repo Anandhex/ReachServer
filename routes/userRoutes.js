@@ -13,6 +13,7 @@ const {
   getFriendsRecommendationList,
   getInterestRecommendation,
   deleteFriend,
+  getUserStats,
   uploadProfileImg
 } = require('../controllers/userController');
 const {
@@ -32,7 +33,7 @@ const {
 const router = express.Router();
 
 router.use('/:userId/posts', postRoutes);
-
+router.get('/getUserStats/:userId', getUserStats);
 router.get('/getLikedPost', protect, getLikedPost);
 router.get('/posts', getPosts);
 router.get('/posts/:postId', getPost);

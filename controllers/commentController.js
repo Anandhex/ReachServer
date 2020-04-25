@@ -75,7 +75,7 @@ exports.deleteComment = catchAsync(async (req, res, next) => {
       }
       let post = await Post.findById(comment.postId);
       post.comments = post.comments.filter(
-        comment => comment !== req.params.commentId
+        comment => !comment.equals(req.params.commentId)
       );
       post = await Post.findByIdAndUpdate(post._id, post, {
         new: true
