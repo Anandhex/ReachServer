@@ -31,13 +31,15 @@ exports.getUserPosts = catchAsync(async (req, res, next) => {
 
 exports.getRecommendPosts = catchAsync(async (req, res, next) => {
   const userId = req.params.userId;
-  console.log(req.query.recommend);
-  let resp = await axios.get(
-    `https://dry-savannah-75351.herokuapp.com/recommend-interest?interests=${req.user.areaOfInterest
-      .filter(interest => interest)
-      .join(':')}}`
-  );
-  let interests = resp.data.interests;
+  let interests;
+  if (req.query.recommend) {
+    let resp = await axios.get(
+      `https://dry-savannah-75351.herokuapp.com/recommend-interest?interests=${req.user.areaOfInterest
+        .filter(interest => interest)
+        .join(':')}}`
+    );
+    interests = resp.data.interests;
+  }
   interests.push(...req.user.areaOfInterest);
   interests = interests.filter(interest => interest);
   console.log(interests);
