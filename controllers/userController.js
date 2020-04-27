@@ -126,6 +126,12 @@ exports.addFriend = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', data: { user } });
 });
 
+exports.getUserFollower = catchAsync(async (req, res, next) => {
+  const userId = req.params.userId;
+  const userFollower = await User.find({ friends: userId });
+  res.status(200).json({ status: 'success', data: { data: userFollower } });
+});
+
 exports.deleteFriend = catchAsync(async (req, res, next) => {
   const friends = req.user.friends.filter(
     friend => friend != req.params.userId

@@ -42,6 +42,7 @@ router.post('/login', login);
 
 router.post('/forgotPassword', forgotPassword);
 router.get('/resetPassword/:token', resetPassword);
+router.get('/getFollowers/:userId', getUserFollower);
 
 router.route('/profileUpload').post(protect, uploadProfileImg);
 router.route('/friends').get(protect, getFriends);
