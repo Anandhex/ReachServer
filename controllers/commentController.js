@@ -22,7 +22,9 @@ exports.addComment = catchAsync(async (req, res, next) => {
   req.body.userId = req.user._id;
   req.body.postId = req.params.postId;
   const resp = await axios.get(
-    `https://dry-savannah-75351.herokuapp.com/predict-sentiment?comment=${req.body.commentText}`
+    `https://dry-savannah-75351.herokuapp.com/predict-sentiment?comment=${encodeURI(
+      req.body.commentText
+    )}`
   );
   if (resp.data.Sentiment === 'Positive') {
     const comment = await Comment.create(req.body);
@@ -42,7 +44,9 @@ exports.updateComment = catchAsync(async (req, res, next) => {
   if (comment) {
     if (req.user._id.equals(comment.userId)) {
       const resp = await axios.get(
-        `https://dry-savannah-75351.herokuapp.com/predict-sentiment?comment=${req.body.commentText}`
+        `https://dry-savannah-75351.herokuapp.com/predict-sentiment?comment=${encodeURI(
+          req.body.commentText
+        )}`
       );
       if (resp.data.Sentiment === 'Positive') {
         comment = await Comment.findByIdAndUpdate(
