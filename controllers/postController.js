@@ -31,7 +31,7 @@ exports.getUserPosts = catchAsync(async (req, res, next) => {
 
 exports.getRecommendPosts = catchAsync(async (req, res, next) => {
   const userId = req.params.userId;
-  let interests;
+  let interests = [];
   if (req.query.recommend) {
     let resp = await axios.get(
       `https://dry-savannah-75351.herokuapp.com/recommend-interest?interests=${req.user.areaOfInterest
@@ -39,13 +39,17 @@ exports.getRecommendPosts = catchAsync(async (req, res, next) => {
         .join(':')}}`
     );
     interests = resp.data.interests;
+    interests.push(...req.user.areaOfInterest);
+    interests = interests.filter(interest => interest);
   }
-  interests.push(...req.user.areaOfInterest);
-  interests = interests.filter(interest => interest);
-  console.log(interests);
-  const posts = await Post.find({
-    $and: [{ userId: { $nin: userId } }, { category: { $in: interests } }]
-  });
+  let posts = [];
+  if (interests.lenght) {
+    posts = await Post.find({
+      $and: [{ userId: { $nin: userId } }, { category: { $in: interests } }]
+    });
+  } else {
+    posts = await Post.find({ userId: { $nin: userId } });
+  }
   res.status(200).json({ status: 'success', data: { posts } });
 });
 
