@@ -41,6 +41,7 @@ exports.getRecommendPosts = catchAsync(async (req, res, next) => {
     interests = resp.data.interests;
     interests.push(...req.user.areaOfInterest);
     interests = interests.filter(interest => interest);
+    console.log(interests);
   }
   let posts = [];
   if (interests.lenght) {
