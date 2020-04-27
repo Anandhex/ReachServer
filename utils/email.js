@@ -14,8 +14,7 @@ exports.sendMail = async options => {
     from: 'ReachOut CEO <reachOut@gmail.com>',
     to: options.email,
     subject: options.subject,
-    text: options.message,
-    html
+    text: options.message
     // text: htmlToText.fromString(
     //   <form method="POST">
     //     Password:
