@@ -74,15 +74,13 @@ exports.addPost = catchAsync(async (req, res, next) => {
       req.body.postContent
     )}`
   );
+  let message;
+  if (resp.data.Sentiment === 'Negative') {
+    message = 'Please refrain from typing such post/comments';
+  }
   if (req.user._id.equals(req.body.userId)) {
-    if (resp.data.Sentiment === 'Positive') {
-      const post = await Post.create(req.body);
-      res.status(201).json({ status: 'success', data: { data: post } });
-    } else {
-      return next(
-        new AppError('The post is not appropriate to be posted', 400)
-      );
-    }
+    const post = await Post.create(req.body);
+    res.status(201).json({ status: 'success', data: { data: post, message } });
   } else {
     next(new AppError('Unauthorized access', 401));
   }
@@ -109,16 +107,17 @@ exports.updatePost = catchAsync(async (req, res, next) => {
             req.body.postContent
           )}`
         );
-        if (resp.data.Sentiment === 'Positive') {
-          post = await Post.findByIdAndUpdate(req.params.postId, req.body, {
-            new: true
-          });
-        } else {
-          return next(
-            new AppError('The post is not appropriate to be updated', 400)
-          );
+        let message;
+        if (resp.data.Sentiment === 'Negative') {
+          message = 'Please refrain from typing such post/comments';
         }
-        res.status(200).json({ status: 'success', data: { data: post } });
+        post = await Post.findByIdAndUpdate(req.params.postId, req.body, {
+          new: true
+        });
+
+        res
+          .status(200)
+          .json({ status: 'success', data: { data: post, message } });
       } else {
         next(
           new AppError('Unauthorized. Please login to update the post', 401)
