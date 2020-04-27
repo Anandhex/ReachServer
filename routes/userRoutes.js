@@ -10,6 +10,7 @@ const {
   deleteUser,
   addFriend,
   getFriends,
+  getUserFollower,
   getFriendsRecommendationList,
   getInterestRecommendation,
   deleteFriend,
